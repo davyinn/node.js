@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>List of agents</h1>
+    <div id="agents"></div>
+
+    <form>
+      <input type="text" name="agent" />
+      <button type="button" onclick="sendAgent()">Send agent</button>
+      <input type="text" name="agent" />
+      <button type="button" onclick="updateAgent()">Update agent</button>
+      <input type="text" name="agent" />
+      <button type="button" onclick="deleteAgent()">Delete agent</button>
+    </form>
+
+    <script>
+      const agentList = document.getElementById("agents");
+      const sendAgent = async () => {
+        let agent = document.querySelector('input[name="agent"]').value;
+
+        let response = await fetch("http://localhost:3000/agents", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: agent }),
+        });
+
+        window.location.href = "index.html";
+      };
+      // fetch data from api and display it
+      fetch("http://localhost:3000/agents")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          data.forEach((agent) => {
+            agentList.innerHTML += `
+                    <h2>${agent.name}</h2>
+                `;
+          });
+        });
+
+      const updateAgent = async () => {
+        let agent = document.querySelector('input[name="agent"]').value;
+        let response = await fetch(`http://loalhost:3000/agents/${id}`, {
+          method: `PUT`,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: agent }),
+        });
+        window.location.href = "index.html";
+      };
+
+      const deleteAgent = async () => {
+        let response = await fetch(`http://localhost:3000/agents/${id}`, {
+          method: "DELETE",
+        });
+        window.location.href = "index.html";
+      };
+    </script>
+  </body>
+</html>
